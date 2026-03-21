@@ -1,14 +1,17 @@
-# Binaries
-bin/
-*.exe
-*.exe~
-*.dll
-*.so
-*.dylib
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
 
-# Environment variables
+# Build output
+dist/
+
+# Environment
 .env
-.env.*
+.env.local
+.env.*.local
 !.env.example
 
 # OS specific
@@ -16,17 +19,12 @@ bin/
 Thumbs.db
 desktop.ini
 
-# Go workspace file
-go.work
-
-# Test coverage
-coverage.txt
-coverage.html
-*.out
-
 # IDE
 .vscode/
 .idea/
 *.swp
 *.swo
 *~
+
+# Coverage
+coverage/
