@@ -1,12 +1,26 @@
+# Go
+bin/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+go.work
+
 # Node.js
 node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
+ts/node_modules/
+ts/dist/
 
 # Build output
 dist/
+ts/dist/
 
 # Environment
 .env

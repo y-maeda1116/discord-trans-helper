@@ -2,6 +2,8 @@
 
 Discordのメッセージをボタン一つで翻訳する補助ボット。
 
+TypeScript版とGo版の両方が提供されています。
+
 ## 機能
 
 - Discordの各メッセージに「Translate」コンテキストメニューを表示
@@ -9,84 +11,73 @@ Discordのメッセージをボタン一つで翻訳する補助ボット。
 - 翻訳結果はボタンを押した本人にだけ表示される（Ephemeral Message）
 - 翻訳元の言語を自動判定し、日本語なら英語へ、それ以外なら日本語へ翻訳
 
-## 技術スタック
+## インストール方法
 
-- TypeScript
-- discord.js
-- deepl-node
-- Node.js >= 20.0.0
-
-## セットアップ
-
-### 1. 依存関係のインストール
+### TypeScript版
 
 ```bash
+cd ts
 npm install
 ```
 
-### 2. 環境変数の設定
+### Go版
 
 ```bash
-cp .env.example .env
+# 依存関係のインストール
+go mod download
 ```
 
-`.env` ファイルを編集して以下の値を設定します：
+## 環境変数の設定
+
+プロジェクトルートに `.env` ファイルを作成します：
 
 ```env
 DISCORD_TOKEN=your_discord_bot_token_here
 DEEPL_AUTH_KEY=your_deepl_auth_key_here
-CLIENT_ID=your_discord_client_id_here
 ```
 
-### 3. Discord開発者ポータルの設定
-
-ボットを正しく動作させるには、以下の手順が必要です：
-
-#### 3.1 ボットの作成とトークンの取得
+### Discord開発者ポータルの設定
 
 1. [Discord Developer Portal](https://discord.com/developers/applications) にアクセス
 2. 「New Application」をクリックしてアプリケーションを作成
 3. 「Bot」タブから「Add Bot」をクリック
-4. 「Reset Token」をクリックしてボットトークンを取得し、`.env` の `DISCORD_TOKEN` に設定
+4. 「Reset Token」をクリックしてボットトークンを取得
 5. **重要**: MESSAGE CONTENT INTENT を有効化してください
-   - 「Bot」タブの「Privileged Gateway Intents」セクション
-   - 「Message Content Intent」をオンにする
+6. 「General Information」タブの「APPLICATION ID」を確認
+7. DeepL APIキーを取得し、`.env` に設定
 
-#### 3.2 CLIENT_ID の取得
+## 実行方法
 
-1. 「General Information」タブを開く
-2. 「APPLICATION ID」の値を `.env` の `CLIENT_ID` に設定
-
-#### 3.3 DeepL APIキーの取得
-
-1. [DeepL API](https://www.deepl.com/pro-api) に登録
-2. APIキーを取得し、`.env` の `DEEPL_AUTH_KEY` に設定
-
-#### 3.4 ボットをサーバーに招待
-
-1. 「OAuth2」 > 「URL Generator」タブを開く
-2. 「Scopes」で「bot」を選択
-3. 「Bot Permissions」で少なくとも「Send Messages」と「Use Application Commands」を選択
-4. 生成されたURLにアクセスしてボットをサーバーに招待
-
-## 実行
-
-### 開発モード（ホットリロード）
+### TypeScript版
 
 ```bash
+cd ts
+
+# 開発モード（ホットリロード）
 npm run dev
-```
 
-### ビルド
-
-```bash
+# ビルド
 npm run build
+
+# 本番実行
+npm start
 ```
 
-### 本番実行
+### Go版
 
 ```bash
-npm start
+# ビルド
+make build
+
+# 実行
+make run
+
+# クリーンアップ
+make clean
+
+# クロスプラットフォームビルド
+make build-win  # Windows
+make build-mac  # macOS (arm64)
 ```
 
 ## 使い方
@@ -100,15 +91,28 @@ npm start
 
 ```
 .
-├── src/
+├── ts/                       # TypeScript版
+│   ├── src/
+│   │   ├── config/
+│   │   │   └── index.ts     # 環境変数設定（Zodバリデーション付き）
+│   │   ├── lib/
+│   │   │   ├── translator.ts # DeepL翻訳機能
+│   │   │   └── commands.ts   # Discordコマンド登録
+│   │   └── index.ts          # Discordクライアントメイン
+│   ├── package.json
+│   └── tsconfig.json
+├── cmd/                      # Go版
+│   └── app/
+│       └── main.go          # メインアプリケーション
+├── internal/                # Go版内部パッケージ
 │   ├── config/
-│   │   └── index.ts      # 環境変数設定（Zodバリデーション付き）
-│   ├── lib/
-│   │   ├── translator.ts  # DeepL翻訳機能
-│   │   └── commands.ts    # Discordコマンド登録
-│   └── index.ts           # Discordクライアントメイン
-├── .env.example          # 環境変数テンプレート
-├── package.json
+│   │   └── config.go       # 環境変数設定
+│   └── translator/
+│       └── translator.go   # DeepL翻訳機能
+├── go.mod                  # Goモジュール定義
+├── go.sum                  # 依存関係ロック
+├── Makefile                # クロスプラットフォームビルド
+├── .env.example            # 環境変数テンプレート
 └── README.md
 ```
 
