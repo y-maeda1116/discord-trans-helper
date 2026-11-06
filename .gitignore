@@ -1,5 +1,6 @@
 # Go
 bin/
+/app
 *.exe
 *.exe~
 *.dll
@@ -42,3 +43,4 @@ desktop.ini
 
 # Coverage
 coverage/
+coverage.txt
