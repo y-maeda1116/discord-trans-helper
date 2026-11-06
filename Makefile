@@ -44,4 +44,8 @@ run:
 	@go run $(MAIN)
 
 clean:
-	@if exist $(BIN_DIR) (rmdir /s /q $(BIN_DIR)) else (rm -rf $(BIN_DIR))
+ifeq ($(OS),Windows_NT)
+	@if exist $(BIN_DIR) rmdir /s /q $(BIN_DIR)
+else
+	@rm -rf $(BIN_DIR)
+endif
