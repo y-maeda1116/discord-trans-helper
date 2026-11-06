@@ -13,12 +13,9 @@ const client = new Client({
 
 // Ready event - bot is online
 client.once('ready', async () => {
-  console.log(`Logged in as ${client.user?.tag}!`);
-
   // Register commands when bot is ready
   try {
     await registerCommands();
-    console.log('Commands registered successfully');
   } catch (error) {
     console.error('Failed to register commands:', error);
   }
@@ -70,14 +67,13 @@ async function handleTranslateInteraction(interaction: MessageContextMenuCommand
 }
 
 // Shutdown handlers
-const shutdown = (signal: string) => {
-  console.log(`Received ${signal}, shutting down gracefully...`);
+const shutdown = () => {
   client.destroy();
   process.exit(0);
 };
 
-process.on('SIGINT', () => shutdown('SIGINT'));
-process.on('SIGTERM', () => shutdown('SIGTERM'));
+process.on('SIGINT', () => shutdown());
+process.on('SIGTERM', () => shutdown());
 
 // Login with token
 client.login(config.DISCORD_TOKEN);
