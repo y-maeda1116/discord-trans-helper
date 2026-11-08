@@ -2,7 +2,10 @@
 
 Discordのメッセージをボタン一つで翻訳する補助ボット。
 
-TypeScript版とGo版の両方が提供されています。
+Go実装（単一バイナリ・クロスプラットフォーム）。
+
+> **注意**: 以前提供されていた TypeScript 版（`ts/`）は Go 版への一本化に伴い削除されました。
+> 翻訳ロジックは `internal/translator/` に移行済みです。経緯は issue #2 を参照してください。
 
 ## 機能
 
@@ -12,15 +15,6 @@ TypeScript版とGo版の両方が提供されています。
 - 翻訳元の言語を自動判定し、日本語なら英語へ、それ以外なら日本語へ翻訳
 
 ## インストール方法
-
-### TypeScript版
-
-```bash
-cd ts
-npm install
-```
-
-### Go版
 
 ```bash
 # 依存関係のインストール
@@ -48,23 +42,6 @@ DEEPL_AUTH_KEY=your_deepl_auth_key_here
 
 ## 実行方法
 
-### TypeScript版
-
-```bash
-cd ts
-
-# 開発モード（ホットリロード）
-npm run dev
-
-# ビルド
-npm run build
-
-# 本番実行
-npm start
-```
-
-### Go版
-
 ```bash
 # ビルド
 make build
@@ -91,20 +68,10 @@ make build-mac  # macOS (arm64)
 
 ```
 .
-├── ts/                       # TypeScript版
-│   ├── src/
-│   │   ├── config/
-│   │   │   └── index.ts     # 環境変数設定（Zodバリデーション付き）
-│   │   ├── lib/
-│   │   │   ├── translator.ts # DeepL翻訳機能
-│   │   │   └── commands.ts   # Discordコマンド登録
-│   │   └── index.ts          # Discordクライアントメイン
-│   ├── package.json
-│   └── tsconfig.json
-├── cmd/                      # Go版
+├── cmd/                      # アプリケーションエントリーポイント
 │   └── app/
 │       └── main.go          # メインアプリケーション
-├── internal/                # Go版内部パッケージ
+├── internal/                # 内部パッケージ
 │   ├── config/
 │   │   └── config.go       # 環境変数設定
 │   └── translator/
